@@ -10,11 +10,17 @@ DB_Host = os.environ.get('DB_Host') or "localhost"
 DB_Database = os.environ.get('DB_Database') or "mysql"
 DB_User = os.environ.get('DB_User') or "root"
 DB_Password = os.environ.get('DB_Password') or "paswrd"
-image_s=os.environ.get('IMG_Success') 
-image_f=os.environ.get('IMG_Failure') 
+
+#Adedd to read evnironment variables of IMG_URL and Name
+image_url=os.environ.get('IMG_URL') 
 my_name=os.environ.get('Name')
 
-cnts="\nBackground Image URL: \n" +  image_s 
+#To add the log message with full details:
+cnts="\nBackground Image URL: \n" +  image_url
+
+#To get the image name from the passed URL
+image = image_url.split('/')
+image=image[-1]
 
 @app.route("/")
 def main():
@@ -28,12 +34,12 @@ def main():
         color = '#ff3f3f'
         err_message = str(e)
 
-    return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set") + "; " + err_message, db_connect_result=db_connect_result, name=socket.gethostname(), color=color,image_s=image_s, image_f=image_f, my_name=my_name)
+    return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set") + "; " + err_message, db_connect_result=db_connect_result, name=socket.gethostname(), color=color,image_s=image,  my_name=my_name ,contents=cnts)
 
 @app.route("/debug")
 def debug():
     color = '#2196f3'
-    return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set"), color=color,image_s=image_s, image_f=image_f, my_name=my_name, contents=cnts)
+    return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set"), color=color,image_s=image,  my_name=my_name, contents=cnts)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81)
