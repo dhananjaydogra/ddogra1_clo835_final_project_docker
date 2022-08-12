@@ -10,6 +10,4 @@ ADD . /opt/webapp-mysql
 
 EXPOSE 81
 
-RUN aws s3 cp s3://ddogra1-test/ /opt/webapp-mysql/static --recursive
-
 CMD python /opt/webapp-mysql/app.py
