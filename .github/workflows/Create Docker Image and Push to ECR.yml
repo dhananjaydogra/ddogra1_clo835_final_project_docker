@@ -37,7 +37,6 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:TEST_$GIT_SHA .
         
         # Unit test for python Webapp docker image
-        docker run -d -p 8080:81 --name apptest $ECR_REGISTRY/$ECR_REPOSITORY:TEST_$GIT_SHA
         docker run -d -p 8080:81 --name apptest -e IMG_URL=testurl.com/image.png -e Name=Dhananjay -e Bucket=$ECR_REPOSITORY  $ECR_REGISTRY/$ECR_REPOSITORY:TEST_$GIT_SHA
         docker ps
         echo "Pause for 10 seconds to let container start"
