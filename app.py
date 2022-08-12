@@ -11,9 +11,14 @@ DB_Database = os.environ.get('DB_Database') or "mysql"
 DB_User = os.environ.get('DB_User') or "root"
 DB_Password = os.environ.get('DB_Password') or "paswrd"
 
-#Adedd to read evnironment variables of IMG_URL and Name
+#Added to read evnironment variables of IMG_URL, Name and Bucket
 image_url=os.environ.get('IMG_URL') 
 my_name=os.environ.get('Name')
+s3_bucket = os.environ.get('Bucket')
+
+#Command to read all the files in S3 bucket
+cmd= 'aws s3 cp s3://'+s3_bucket+'/ /opt/webapp-mysql/static --recursive'
+os.system(cmd)
 
 #To add the log message with full details:
 cnts="\nBackground Image URL: \n" +  image_url
