@@ -17,7 +17,7 @@ my_name=os.environ.get('Name')
 s3_bucket = os.environ.get('Bucket')
 
 #Command to read all the files in S3 bucket
-cmd= 'aws s3 cp s3://'+s3_bucket+'/ /opt/webapp-mysql/static --recursive'
+cmd= 'aws s3 cp s3://'+s3_bucket+'/  static/  --recursive'
 os.system(cmd)
 
 #To add the log message with full details:
@@ -39,7 +39,7 @@ def main():
         color = '#ff3f3f'
         err_message = str(e)
 
-    return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set") + "; " + err_message, db_connect_result=db_connect_result, name=socket.gethostname(), color=color,image_s=image,  my_name=my_name ,contents=cnts)
+    return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set") + "; " + err_message, db_connect_result=db_connect_result, name=socket.gethostname(), color=color,image_s=image,  my_name=my_name , contents=cnts)
 
 @app.route("/debug")
 def debug():

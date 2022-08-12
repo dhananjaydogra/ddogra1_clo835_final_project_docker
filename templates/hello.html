@@ -1,23 +1,17 @@
 <!doctype html>
 <title>Hello from Flask </title>
- <!--<body style="background: {{ color }};"></body> -->
-<!-- <body style="background-image: url('{{ image_s }}');"> -->
-<body style="background-image: url(' {{ url_for('static', filename='image.png') }} ')"> 
-<div style="color: #e4e4e4;
-    text-align:  center;
+<body style="background-image: url('static/clo835/config/{{image_s}}')"> 
+<div style="text-align:  center;
     vertical-align:  middle;">
  <h2>Project Worked by:  {{ my_name }} </h2>
   {% if db_connect_result %}
-  <!-- <img src="{{ url_for('static', filename='img/success.jpg') }}"> -->
-  <img src="{{ url_for('static', filename='img/success.jpg') }}" width="400"  height="200" >
+  <img src="static/clo835/config/sucess.png" width="500"  height="300" >                 
     <h3> Successfully connected to the MySQL database.</h3>
   {% else %}
-  <img src="{{ url_for('static', filename='img/failed.png') }}" width="400"  height="200"> 
-  <!-- <img src="{{ url_for('static', filename='image.png') }}"> -->
+  <img src="static/clo835/config/failed.png" width="500"  height="300" >                 
     <h3> Failed connecting to the MySQL database. </h3>
   {% endif %}
 
- 
   {% if debug %}
     <h2> {{ debug }} </h2>
   {% endif %}
