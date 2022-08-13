@@ -18,16 +18,15 @@ s3_bucket = os.environ.get('Bucket')
 
 #Command to read all the files in S3 bucket
 cmd= 'aws s3 cp s3://'+s3_bucket+'/  static/  --recursive'
-cmd_output=os.system(cmd)
 #Added aws S3 command and it's output for better debugging
 print(cmd + "\n\tThe Output:\n")
 
-print(cmd_output)
+os.system(cmd)
 
 #To add the log message with full details:
 cnts="\nBackground Image URL: \n" +  image_url
 
-print ("\nLOGS:" + cnts)
+print ("\nLOGS:" + cnts+"\n")
 
 #To get the image name from the passed URL
 image = image_url.split('/')
