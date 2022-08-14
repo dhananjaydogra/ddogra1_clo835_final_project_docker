@@ -1,0 +1,48 @@
+# 1. Push Docker images to an ECR repository
+
+name: Push to Amazon ECR
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  
+  build:
+    name: Build the Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}             # set this to your AWS_ACCESS_KEY_ID secret key in git 
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     # set this to your AWS_SECRET_ACCESS_KEY secret key in git 
+        AWS_REGION: us-east-1
+        
+    - name: Build, test, and push WebApp Docker image to Amazon ECR
+      id: build-image-pythonWebapp
+      env:
+        ECR_REPOSITORY: ddogra1-finalproject           # set this to your Amazon ECR repository name
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}                            
+        GIT_SHA: ${{ github.sha }}
+        
+      run: |
+        #### Build a docker container for WebApp  push it to ECR
+        ls -ltra
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:WEBAPP_$GIT_SHA .
+        
+        # Unit test for python Webapp docker image
+        docker run -d -p 8080:81 --name apptest -e IMG_URL=testurl.com/image.png -e Name=Dhananjay -e Bucket=$ECR_REPOSITORY  $ECR_REGISTRY/$ECR_REPOSITORY:WEBAPP_$GIT_SHA
+        docker ps
+        echo "Pause for 10 seconds to let container start"
+        sleep 10
+        curl localhost:8080  -vvv 
+        
+       
+        #Pushing the Python Webapp Docker Image to ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:WEBAPP_$GIT_SHA
