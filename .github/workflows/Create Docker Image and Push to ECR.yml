@@ -27,17 +27,17 @@ jobs:
     - name: Build, test, and push WebApp Docker image to Amazon ECR
       id: build-image-pythonWebapp
       env:
-        ECR_REPOSITORY: ddogra1-test           # set this to your Amazon ECR repository name
+        ECR_REPOSITORY: ddogra1-finalproject           # set this to your Amazon ECR repository name
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}                            
         GIT_SHA: ${{ github.sha }}
         
       run: |
         #### Build a docker container for WebApp  push it to ECR
         ls -ltra
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:TEST_$GIT_SHA .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:WEBAPP_$GIT_SHA .
         
         # Unit test for python Webapp docker image
-        docker run -d -p 8080:81 --name apptest -e IMG_URL=testurl.com/image.png -e Name=Dhananjay -e Bucket=$ECR_REPOSITORY  $ECR_REGISTRY/$ECR_REPOSITORY:TEST_$GIT_SHA
+        docker run -d -p 8080:81 --name apptest -e IMG_URL=testurl.com/image.png -e Name=Dhananjay -e Bucket=$ECR_REPOSITORY  $ECR_REGISTRY/$ECR_REPOSITORY:WEBAPP_$GIT_SHA
         docker ps
         echo "Pause for 10 seconds to let container start"
         sleep 10
@@ -45,4 +45,4 @@ jobs:
         
        
         #Pushing the Python Webapp Docker Image to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:TEST_$GIT_SHA
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:WEBAPP_$GIT_SHA
