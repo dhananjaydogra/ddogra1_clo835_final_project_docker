@@ -7,6 +7,34 @@
   {% if db_connect_result %}
   <img src="static/clo835/config/sucess.png" width="500"  height="300" >                 
     <h3> Successfully connected to the MySQL database.</h3>
+     {% if logs %}
+     <h2>Query: SELECT * FROM LOGS; </h2>
+     <!--<h3> {{ logs }}  </h3> <br>-->
+     <style>
+       table, th, td {
+       border: 2px solid black;
+       }
+     </style>
+      <table style="width: 100%;
+              text-align: center:">
+       <thead style="color: red">
+          <th>ID</th>
+          <th>Image_Name</th>
+          <th>Time_Stamp</th>
+          <th>Image_URL</th>
+       </thead>
+       <tbody style="color: orange">
+          {% for item in logs %}
+          <tr>
+             <td>{{item[0]}}</td>
+             <td>{{item[1]}}</td>
+             <td>{{item[2]}}</td>
+             <td>{{item[3]}}</td>
+          </tr>
+          {% endfor %}
+       </tbody>
+      </table>   
+     {% endif %}
   {% else %}
   <img src="static/clo835/config/failed.png" width="500"  height="300" >                 
     <h3> Failed connecting to the MySQL database. </h3>

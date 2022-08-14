@@ -37,14 +37,51 @@ def main():
     db_connect_result = False
     err_message = ""
     try:
-        mysql.connector.connect(host=DB_Host, database=DB_Database, user=DB_User, password=DB_Password)
+        mydb=mysql.connector.connect(host=DB_Host, database=DB_Database, user=DB_User, password=DB_Password)
         color = '#39b54b'
         db_connect_result = True
+        #Added logic to create a table and insert a record whenever the page is fetched 
+        mycursor = mydb.cursor()
+        mycursor.execute("CREATE TABLE IF NOT EXISTS LOGS ( \
+                            ID INT auto_increment, \
+                            Image_Name VARCHAR(255), \
+                            Time_Stamp TIMESTAMP,  \
+                            Image_URL VARCHAR(255), \
+                            primary key (id) ); ")
+                            
+          
+        sql = "INSERT INTO LOGS (Image_Name, Time_Stamp, Image_URL) VALUES (%s,CURRENT_TIMESTAMP,%s)"
+        val = (image,image_url)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        print(mycursor.rowcount, "record inserted.")
     except Exception as e:
         color = '#ff3f3f'
         err_message = str(e)
 
     return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set") + "; " + err_message, db_connect_result=db_connect_result, name=socket.gethostname(), color=color,image_s=image,  my_name=my_name , contents=cnts)
+
+#Added logs pags to show the output of the slect query from the mysql database
+@app.route("/logs")
+def logs():
+    db_connect_result = False
+    err_message = ""
+    logs_table="<tr> <td> ID </td> <td> Image_Name </td> <td> Time_Stamp </td> <td> Image_URL </td>"
+    try:
+        db=mysql.connector.connect(host=DB_Host, database=DB_Database, user=DB_User, password=DB_Password)
+        color = '#453f3f'
+        db_connect_result = True
+        fetchcursor = db.cursor()
+        fetchcursor.execute("SELECT * FROM LOGS")
+        myresult = fetchcursor.fetchall()
+        
+            
+    except Exception as e:
+        color = '#ff3f3f'
+        err_message = str(e)
+        
+    return render_template('hello.html', debug="Environment Variables: DB_Host=" + (os.environ.get('DB_Host') or "Not Set") + "; DB_Database=" + (os.environ.get('DB_Database')  or "Not Set") + "; DB_User=" + (os.environ.get('DB_User')  or "Not Set") + "; DB_Password=" + (os.environ.get('DB_Password')  or "Not Set") + "; " + err_message, db_connect_result=db_connect_result, name=socket.gethostname(), color=color,image_s=image,  my_name=my_name , logs=myresult)
+
 
 @app.route("/debug")
 def debug():
